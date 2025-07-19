@@ -20,5 +20,5 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - run: python test.py
+      - run: python test.py && zip balicek.zip skript.py
 
