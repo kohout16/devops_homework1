@@ -1,0 +1,11 @@
+.git
+.github
+*.md
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.zip
+.venv/
+venv/
