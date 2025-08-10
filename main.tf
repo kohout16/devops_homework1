@@ -83,3 +83,36 @@ resource "aws_instance" "ec2_instance" {
     Course      = var.course_name
   }
 }
+
+# ECR Repository
+resource "aws_ecr_repository" "python_calculator" {
+name = var.repository_name
+image_tag_mutability = "MUTABLE"
+
+image_scanning_configuration {
+scan_on_push = true
+}
+}
+
+# ECR Lifecycle Policy
+resource "aws_ecr_lifecycle_policy" "python_calculator_policy" {
+repository = aws_ecr_repository.python_calculator.name
+
+policy = jsonencode({
+rules = [
+{
+rulePriority = 1
+description = "Keep last 10 images"
+selection = {
+tagStatus = "tagged"
+tagPrefixList = ["v"]
+countType = "imageCountMoreThan"
+countNumber = 10
+}
+action = {
+type = "expire"
+}
+}
+]
+})
+}

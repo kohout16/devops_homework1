@@ -43,3 +43,9 @@ variable "public_key_path" {
   type        = string
   default     = "~/.ssh/id_ed25519.pub"
 }
+
+variable "repository_name" {
+description = "Name of the ECR repository"
+type = string
+default = "python-calculator"
+}
