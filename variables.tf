@@ -4,6 +4,10 @@ variable "aws_region" {
   default     = "eu-central-1"
 }
 
+variable "project_name" {
+  default = "ecs-nginx-demo"
+}
+
 variable "instance_type" {
   description = "Typ EC2 instance"
   type        = string
