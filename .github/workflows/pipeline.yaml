@@ -32,61 +32,57 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: python test.py && zip balicek.zip my_calculations.py
 
+"lesson4":
+    if: ${{ github.event.inputs.lesson == 'lesson4' }}
+
+    runs-on: ubuntu-latest
+    environment: dev
+    # run terraform in lesson-4/live-demo directory
+    # defaults:
+    #   run: cd lesson-4/live-demo
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4.1.0
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-central-1
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v3
+      with: 
+        terraform_version: "1.11.1"
+
+    - name: Terraform plan and apply
+      working-directory: lesson-4/live-demo
+      env:
+        TF_VAR_aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        TF_VAR_aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        TF_VAR_aws_region: eu-central-1
+        TF_IN_AUTOMATION: true
+        TF_INPUT: false
+        TF_WORKSPACE: dev
+      run: |
+        terraform init
+        terraform plan -no-color
+        terraform apply -auto-approve -no-color
+        
   "lesson5":
     if: ${{ github.event.inputs.lesson == 'lesson5' }}
-    #needs: build-and-test
+
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/main'
     environment: dev
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.5.0
-
-      - name: Terraform Init
-        working-directory: ./terraform
-        run: terraform init
-
-      - name: Terraform Plan
-        working-directory: ./terraform
-        run: terraform plan
-
-      - name: Terraform Apply
-        working-directory: ./terraform
-        run: terraform apply -auto-approve
-
-      - name: Get ECR repository URL
-        id: ecr-url
-        working-directory: ./terraform
-        run: |
-          ECR_URL=$(terraform output -raw ecr_repository_url)
-          echo "ecr_url=$ECR_URL" >> $GITHUB_OUTPUT
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build and push Docker image to ECR
-        run: |
-          ECR_URL=${{ steps.ecr-url.outputs.ecr_url }}
-          docker build -t $ECR_URL:latest .
-          docker build -t $ECR_URL:${{ github.sha }} .
-
-          echo "Pushing images to ECR..."
-          docker push $ECR_URL:latest
-          docker push $ECR_URL:${{ github.sha }}
-
-          echo "✅ Images pushed successfully!"
-          echo "Repository URL: $ECR_URL"
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: lesson-5
+        tags: demoapp:latest
 
