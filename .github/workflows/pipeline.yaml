@@ -32,7 +32,7 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: python test.py && zip balicek.zip my_calculations.py
 
-  "lesson5-deploy-to-ecr":
+  "lesson5":
     if: ${{ github.event.inputs.lesson == 'lesson5' }}
     needs: build-and-test
     runs-on: ubuntu-latest
