@@ -1,6 +1,6 @@
 # Security Groups
 resource "aws_security_group" "alb" {
-  name        = "${var.project_name}-alb-sg"
+  name        = "${var.project_name}-alb-sg2"
   description = "Security group for ALB"
   vpc_id      = data.aws_vpc.myvpc.id
   
@@ -19,12 +19,12 @@ resource "aws_security_group" "alb" {
   }
   
   tags = {
-    Name = "${var.project_name}-alb-sg"
+    Name = "${var.project_name}-alb-sg2"
   }
 }
 
 resource "aws_security_group" "ecs_tasks" {
-  name        = "${var.project_name}-ecs-tasks-sg"
+  name        = "${var.project_name}-ecs-tasks-sg2"
   description = "Security group for ECS tasks"
   vpc_id      = data.aws_vpc.myvpc.id
   
@@ -43,6 +43,6 @@ resource "aws_security_group" "ecs_tasks" {
   }
   
   tags = {
-    Name = "${var.project_name}-ecs-tasks-sg"
+    Name = "${var.project_name}-ecs-tasks-sg2"
   }
 }
