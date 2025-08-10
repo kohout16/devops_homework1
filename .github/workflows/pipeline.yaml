@@ -56,6 +56,10 @@ jobs:
         with: 
           terraform_version: "1.11.1"
 
+      - name: Terraform destroy # potrebuju fakt vycistit stav aws
+        working-directory: ./terraform   # adjust if your TF files are somewhere else
+        run: terraform destroy -auto-approve
+
       - name: Terraform plan and apply
         #working-directory: lesson-4/live-demo
         env:
