@@ -61,28 +61,28 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-# EC2 instance
-resource "aws_instance" "ec2_instance" {
-  ami                    = "ami-0a72753edf3e631b7"
-  instance_type          = var.instance_type
-  key_name               = aws_key_pair.ec2_key.key_name
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+# # EC2 instance
+# resource "aws_instance" "ec2_instance" {
+#   ami                    = "ami-0a72753edf3e631b7"
+#   instance_type          = var.instance_type
+#   key_name               = aws_key_pair.ec2_key.key_name
+#   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
-  user_data = <<-EOF
-    #!/bin/bash
-    yum update -y
-    yum install -y httpd
-    systemctl start httpd
-    systemctl enable httpd
-    echo "<html><body><h1>Terraform EC2 Instance</h1><p>Vytvořeno pomocí Terraform pro ${var.course_name}</p></body></html>" > /var/www/html/index.html
-  EOF
+#   user_data = <<-EOF
+#     #!/bin/bash
+#     yum update -y
+#     yum install -y httpd
+#     systemctl start httpd
+#     systemctl enable httpd
+#     echo "<html><body><h1>Terraform EC2 Instance</h1><p>Vytvořeno pomocí Terraform pro ${var.course_name}</p></body></html>" > /var/www/html/index.html
+#   EOF
 
-  tags = {
-    Name        = "${var.name_prefix}-instance"
-    Environment = var.environment
-    Course      = var.course_name
-  }
-}
+#   tags = {
+#     Name        = "${var.name_prefix}-instance"
+#     Environment = var.environment
+#     Course      = var.course_name
+#   }
+# }
 
 # ECR Repository
 resource "aws_ecr_repository" "python_calculator" {
