@@ -2,21 +2,21 @@ provider "aws" {
   region = var.aws_region
 }
 
-# Získání aktuálního Amazon Linux 2 AMI
-data "aws_ami" "amazon_linux_2" {
-  most_recent = true
-  owners      = ["amazon"]
+# # Získání aktuálního Amazon Linux 2 AMI
+# data "aws_ami" "amazon_linux_2" {
+#   most_recent = true
+#   owners      = ["amazon"]
 
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
-  }
+#   filter {
+#     name   = "name"
+#     values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+#   }
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
+#   filter {
+#     name   = "virtualization-type"
+#     values = ["hvm"]
+#   }
+# }
 
 ## Vytvoření key pair pro SSH přístup
 #resource "aws_key_pair" "ec2_key" {
@@ -24,42 +24,42 @@ data "aws_ami" "amazon_linux_2" {
 #  public_key = file(var.public_key_path)
 #}
 
-# Security group pro SSH přístup
-resource "aws_security_group" "ec2_sg" {
-  name        = "${var.name_prefix}-sg"
-  description = "Security group pro EC2 instanci s SSH pristupem"
+# # Security group pro SSH přístup
+# resource "aws_security_group" "ec2_sg" {
+#   name        = "${var.name_prefix}-sg"
+#   description = "Security group pro EC2 instanci s SSH pristupem"
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "SSH pristup"
-  }
+#   ingress {
+#     from_port   = 22
+#     to_port     = 22
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]
+#     description = "SSH pristup"
+#   }
 
-  # Přidáme HTTP port pro bonus úkol s Apache
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "HTTP pristup"
-  }
+#   # Přidáme HTTP port pro bonus úkol s Apache
+#   ingress {
+#     from_port   = 80
+#     to_port     = 80
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]
+#     description = "HTTP pristup"
+#   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Povoleni veskereho odchoziho provozu"
-  }
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#     description = "Povoleni veskereho odchoziho provozu"
+#   }
 
-  tags = {
-    Name        = "${var.name_prefix}-sg"
-    Environment = var.environment
-    Course      = var.course_name
-  }
-}
+#   tags = {
+#     Name        = "${var.name_prefix}-sg"
+#     Environment = var.environment
+#     Course      = var.course_name
+#   }
+# }
 
 # # EC2 instance
 # resource "aws_instance" "ec2_instance" {
