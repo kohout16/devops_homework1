@@ -47,5 +47,5 @@ variable "public_key_path" {
 variable "repository_name" {
 description = "Name of the ECR repository"
 type = string
-default = "python-calculator2"
+default = "python-calculator"
 }
