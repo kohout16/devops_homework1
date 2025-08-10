@@ -56,6 +56,10 @@ jobs:
         with: 
           terraform_version: "1.11.1"
 
+      - name: Terraform Init # proc protoze setup to neudela
+        working-directory: ./terraform    # adjust if needed
+        run: terraform init
+
       - name: Terraform destroy # potrebuju fakt vycistit stav aws
         run: terraform destroy -auto-approve
 
