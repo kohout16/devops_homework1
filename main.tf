@@ -18,11 +18,11 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
-# Vytvoření key pair pro SSH přístup
-resource "aws_key_pair" "ec2_key" {
-  key_name   = var.key_name
-  public_key = file(var.public_key_path)
-}
+## Vytvoření key pair pro SSH přístup
+#resource "aws_key_pair" "ec2_key" {
+#  key_name   = var.key_name
+#  public_key = file(var.public_key_path)
+#}
 
 # Security group pro SSH přístup
 resource "aws_security_group" "ec2_sg" {
