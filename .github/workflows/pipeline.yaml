@@ -37,7 +37,7 @@ jobs:
     #needs: build-and-test
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/main'
-    enviroment: dev
+    environment: dev
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
