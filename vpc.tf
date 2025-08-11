@@ -15,22 +15,39 @@ resource "aws_vpc" "myvpc" {
   }
 }
 
-data "aws_subnets" "albsubnets" {
-  filter {
-    name   = "vpc-id"
-    values = [aws_vpc.myvpc.id]
-  }
+# data "aws_subnets" "albsubnets" {
+#   filter {
+#     name   = "vpc-id"
+#     values = [aws_vpc.myvpc.id]
+#   }
+# }
+
+
+resource "aws_subnet" "albsubnets" {
+  vpc_id                  = aws_vpc.myvpc.id
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "eu-central-1a"
+  map_public_ip_on_launch = true
+  values = [aws_vpc.myvpc.id]
+  tags = { Name = "subnet-1" }
 }
 
-
+resource "aws_subnet" "ecssubnets" {
+  vpc_id                  = aws_vpc.myvpc.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "eu-central-1b"
+  map_public_ip_on_launch = true
+  values = [aws_vpc.myvpc.id]
+  tags = { Name = "subnet-2" }
+}
 
 # pro účely úkolu použijeme stejné subnets. V praxi použijeme různé subnets pro ALB a ECS tasks.
-data "aws_subnets" "ecssubnets" {
-  filter {
-    name   = "vpc-id"
-    values = [aws_vpc.myvpc.id]
-  }
-}
+# data "aws_subnets" "ecssubnets" {
+#   filter {
+#     name   = "vpc-id"
+#     values = [aws_vpc.myvpc.id]
+#   }
+# }
 
 # data "aws_subnet" "example" {
 #   for_each = toset(data.aws_subnets.example.ids)
