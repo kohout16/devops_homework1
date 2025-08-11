@@ -16,7 +16,7 @@ resource "aws_lb_target_group" "main" {
   name     = "${var.project_name}-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = data.aws_vpc.myvpc.id
+  vpc_id   = aws_vpc.myvpc.id
   target_type = "ip"
 
 

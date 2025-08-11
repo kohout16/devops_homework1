@@ -1,22 +1,34 @@
 # pro účely úkolu použijeme existujici default VPC. V reálné aplikaci použijeme VPC vlastní.
-data "aws_vpc" "myvpc" {
+# data "aws_vpc" "myvpc" {
 
-  default = true
+#   default = true
+# }
+
+# creating my own vpc
+resource "aws_vpc" "myvpc" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name = "my-vpc"
+  }
 }
-
 
 data "aws_subnets" "albsubnets" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.myvpc.id]
+    values = [aws_vpc.myvpc.id]
   }
 }
+
+
 
 # pro účely úkolu použijeme stejné subnets. V praxi použijeme různé subnets pro ALB a ECS tasks.
 data "aws_subnets" "ecssubnets" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.myvpc.id]
+    values = [aws_vpc.myvpc.id]
   }
 }
 
