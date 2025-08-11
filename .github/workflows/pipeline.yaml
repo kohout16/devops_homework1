@@ -1,13 +1,13 @@
 name: All lessons
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: 
-  push:
+  #push:
   workflow_dispatch:
       inputs:
         lesson:
           description: 'Select the lesson to run'
           required: true
-          default: 'lesson2'
+          default: 'lesson4'
           type: choice
           options:
             - lesson2
