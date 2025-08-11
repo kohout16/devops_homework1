@@ -116,3 +116,10 @@ type = "expire"
 ]
 })
 }
+
+backend "s3" {
+# bucket vytvořit ručně např. přes AWS console služba S3 -> create. Jméno musí být unikátní např. tfstate-<číslo aws účtu>-eu-central-1
+    bucket = "your-terraform-state-bucket"
+    key    = "ecs-demo/terraform.tfstate"
+    region = "us-east-1"
+  }
