@@ -1,9 +1,10 @@
 name: Docker Build and Test
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
-  push:
-    branches:
-      - main  # or your relevant branch
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main  # or your relevant branch
   workflow_dispatch:
 jobs:
   build-and-test:
