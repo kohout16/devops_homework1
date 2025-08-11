@@ -104,6 +104,11 @@ jobs:
           push: true
           tags: 563748388258.dkr.ecr.eu-central-1.amazonaws.com/python-calculator:latest
       
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with: 
+          terraform_version: "1.11.1"
+
       - name: Terraform Init
         run: terraform init
       
