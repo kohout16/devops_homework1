@@ -115,6 +115,9 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
+      - name: Terraform destroy # potrebuju fakt vycistit stav aws
+        run: terraform destroy -auto-approve
+
       - name: Terraform Apply
         run: terraform apply -auto-approve
       
