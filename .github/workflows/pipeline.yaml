@@ -104,9 +104,13 @@ jobs:
           push: true
           tags: 563748388258.dkr.ecr.eu-central-1.amazonaws.com/python-calculator:latest
       
+      - name: Terraform Init
+        run: terraform init
+      
       - name: Get ECR repository URL
         id: ecr-url
         run: |
           ECR_URL=$(terraform output -raw ecr_repository_url)
           echo "ecr_url=$ECR_URL" >> $GITHUB_OUTPUT
+      
 
