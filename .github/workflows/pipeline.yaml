@@ -89,6 +89,6 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
-        context: lesson-5
-        tags: demoapp:latest
+        #context: lesson-5
+        tags: calculator:latest
 
