@@ -56,11 +56,11 @@ jobs:
         with: 
           terraform_version: "1.11.1"
 
-      # - name: Terraform Init # proc protoze setup to neudela
-      #   run: terraform init
+      - name: Terraform Init # proc protoze setup to neudela
+        run: terraform init
 
-      # - name: Terraform destroy # potrebuju fakt vycistit stav aws
-      #   run: terraform destroy -auto-approve
+      - name: Terraform destroy # potrebuju fakt vycistit stav aws
+        run: terraform destroy -auto-approve
 
       - name: Terraform plan and apply
         #working-directory: lesson-4/live-demo
