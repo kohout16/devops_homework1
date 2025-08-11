@@ -22,6 +22,14 @@ resource "aws_ecs_task_definition" "lesson7" {
           protocol      = "tcp"
         }
       ]
+      logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group"         = aws_cloudwatch_log_group.nginx.name
+        "awslogs-region"        = var.aws_region
+        "awslogs-stream-prefix" = "ecs"
+      }
+
     }
   ])
 }
