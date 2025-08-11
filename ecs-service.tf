@@ -36,7 +36,10 @@ resource "aws_ecs_service" "lesson7" {
   launch_type = "FARGATE"
 
   network_configuration {
-    subnets          = [data.aws_subnets.ecssubnets.ids[0], data.aws_subnets.ecssubnets.ids[1]]
+    subnets            = [
+    aws_subnet.subnet1.id,
+    aws_subnet.subnet2.id
+  ]
     security_groups  = [aws_security_group.ecs_tasks.id]
     assign_public_ip = false
   }
