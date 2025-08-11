@@ -106,8 +106,7 @@ jobs:
       
       - name: Get ECR repository URL
         id: ecr-url
-        #working-directory: ./terraform
         run: |
-        ECR_URL=\$(terraform output -raw ecr_repository_url)
-        echo "ecr_url=\$ECR_URL" >> \$GITHUB_OUTPUT
+          ECR_URL=$(terraform output -raw ecr_repository_url)
+          echo "ecr_url=$ECR_URL" >> $GITHUB_OUTPUT
 
