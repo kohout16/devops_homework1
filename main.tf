@@ -1,6 +1,26 @@
+# Provider configuration
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+  
+  backend "s3" {
+# bucket vytvořit ručně např. přes AWS console služba S3 -> create. Jméno musí být unikátní např. tfstate-<číslo aws účtu>-eu-central-1
+    bucket = "tfstate-563748388258-eu-central-1"
+    key    = "ecs-demo/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }
+
+
+
 
 # # Získání aktuálního Amazon Linux 2 AMI
 # data "aws_ami" "amazon_linux_2" {
@@ -116,10 +136,3 @@ type = "expire"
 ]
 })
 }
-
-backend "s3" {
-# bucket vytvořit ručně např. přes AWS console služba S3 -> create. Jméno musí být unikátní např. tfstate-<číslo aws účtu>-eu-central-1
-    bucket = "your-terraform-state-bucket"
-    key    = "ecs-demo/terraform.tfstate"
-    region = "us-east-1"
-  }
