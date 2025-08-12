@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "lesson7" {
       portMappings = [
         {
           containerPort = 80
-          hostPort      = 80
+          #hostPort      = 80
           protocol      = "tcp"
         }
       ]
