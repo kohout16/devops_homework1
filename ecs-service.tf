@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "lesson7" {
   container_definitions = jsonencode([
     {
       name      = "web"
-      image     = "739133790707.dkr.ecr.eu-central-1.amazonaws.com/mynginx:latest"
+      image     = "739133790707.dkr.ecr.eu-cetntral-1.amazonaws.com/mynginx:latest"
       portMappings = [
         {
           containerPort = 80
@@ -22,14 +22,6 @@ resource "aws_ecs_task_definition" "lesson7" {
           protocol      = "tcp"
         }
       ]
-      logConfiguration = {
-      logDriver = "awslogs"
-      options = {
-        "awslogs-group"         = aws_cloudwatch_log_group.nginx.name
-        "awslogs-region"        = var.aws_region
-        "awslogs-stream-prefix" = "ecs"
-      }
-
     }
   ])
 }
