@@ -103,7 +103,7 @@ jobs:
           terraform_version: "1.11.1"
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -upgrade
 
       - name: Terraform Plan
         run: terraform plan
