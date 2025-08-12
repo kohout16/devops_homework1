@@ -114,6 +114,10 @@ scan_on_push = true
 }
 }
 
+resource "aws_ecr_repository" "mynginx" {
+  name = "mynginx"
+}
+
 # ECR Lifecycle Policy
 resource "aws_ecr_lifecycle_policy" "python_calculator_policy" {
 repository = aws_ecr_repository.python_calculator.name
