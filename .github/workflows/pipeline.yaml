@@ -105,11 +105,11 @@ jobs:
       - name: Terraform Init
         run: terraform init -upgrade
 
-      - name: Terraform Plan
-        run: terraform plan
-
       - name: Terraform destroy # potrebuju fakt vycistit stav aws
         run: terraform destroy -auto-approve
+        
+      - name: Terraform Plan
+        run: terraform plan
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
