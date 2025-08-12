@@ -11,7 +11,7 @@ terraform {
 # bucket vytvořit ručně např. přes AWS console služba S3 -> create. Jméno musí být unikátní např. tfstate-<číslo aws účtu>-eu-central-1
     bucket = "tfstate-563748388258-eu-central-1"
     key    = "ecs-demo/terraform.tfstate"
-    region = "us-east-1"
+    region = "eu-central-1"
   }
 }
 
