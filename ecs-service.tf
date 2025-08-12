@@ -49,4 +49,6 @@ resource "aws_ecs_service" "lesson7" {
         container_name   = "web"
         container_port   = 80
     }
+    
+    depends_on = [aws_lb_listener.http]
 }
