@@ -1,55 +1,45 @@
-resource "aws_ecs_cluster" "lesson8" {
-  name = "lesson8"
+resource "aws_ecs_cluster" "lesson7" {
+  name = "lesson7"
 }
 
-resource "aws_cloudwatch_log_group" "lesson8" {
-  name              = "/ecs/lesson8"
-  retention_in_days = 7
-}
-
-resource "aws_ecs_task_definition" "lesson8" {
-  family                   = "lesson8"
+resource "aws_ecs_task_definition" "lesson7" {
+  family                   = "lesson7"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "256"
-  memory                   = "512"
-  task_role_arn            = aws_iam_role.ecs_role.arn
-  execution_role_arn       = aws_iam_role.ecs_role.arn
+  cpu                      = "512"
+  memory                   = "1024"
+
+  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([
     {
       name      = "web"
-      image     = "739133790707.dkr.ecr.eu-central-1.amazonaws.com/mynginx:latest"
+      image = "${aws_ecr_repository.mynginx.repository_url}:latest"
       portMappings = [
         {
           containerPort = 80
-          hostPort      = 80
+          #hostPort      = 80
           protocol      = "tcp"
         }
       ]
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          "awslogs-group"         = aws_cloudwatch_log_group.lesson8.name
-          "awslogs-region"        = "eu-central-1"
-          "awslogs-stream-prefix" = "ecs"
-        }
-      }
     }
   ])
 }
 
 
-resource "aws_ecs_service" "lesson8" {
-  name            = "lesson8"
-  cluster        = aws_ecs_cluster.lesson8.id
-  task_definition = aws_ecs_task_definition.lesson8.arn
-  desired_count   = 1
+resource "aws_ecs_service" "lesson7" {
+  name            = "lesson7"
+  cluster        = aws_ecs_cluster.lesson7.id
+  task_definition = aws_ecs_task_definition.lesson7.arn
+  desired_count   = 2
 
   launch_type = "FARGATE"
 
   network_configuration {
-    subnets          = [data.aws_subnets.ecssubnets.ids[0], data.aws_subnets.ecssubnets.ids[1]]
+    subnets            = [
+    aws_subnet.subnet1.id,
+    aws_subnet.subnet2.id
+  ]
     security_groups  = [aws_security_group.ecs_tasks.id]
     assign_public_ip = true
   }
@@ -59,4 +49,6 @@ resource "aws_ecs_service" "lesson8" {
         container_name   = "web"
         container_port   = 80
     }
+
+    depends_on = [aws_lb_listener.http]
 }
