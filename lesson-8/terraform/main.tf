@@ -140,17 +140,3 @@ type = "expire"
 ]
 })
 }
-
-# ECR Repository
-resource "aws_ecr_repository" "mynginx" {
-name = "mynginx"
-image_tag_mutability = "MUTABLE"
-
-image_scanning_configuration {
-scan_on_push = true
-}
-}
-
-resource "aws_ecr_repository" "mynginx" {
-  name = "mynginx"
-}
