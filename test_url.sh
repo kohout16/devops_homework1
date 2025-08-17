@@ -12,8 +12,8 @@ echo ""
 echo "1️⃣  Testing page for custom string..."
 HEALTH_RESPONSE=$(curl -s "$API_URL")
 if echo "$HEALTH_RESPONSE" | grep -q "20250813 by JL"; then
-    echo "✅ Health check passed"
+    echo "✅ Custom string found"
 else
-    echo "❌ Health check failed"
+    echo "❌ Custom string not found"
     echo "Response: $HEALTH_RESPONSE"
 fi
