@@ -10,11 +10,19 @@ on:
           default: 'lesson4'
           type: choice
           options:
+            - test_url
             - lesson2
             - lesson4
             - lesson5
             - lesson8
 jobs:
+  "test_url":
+    if: ${{ github.event.inputs.lesson == 'test_url' }}
+    runs-on: ubuntu-latest #self-hosted
+    steps:
+      - run: echo "Testing load balancer nginx return page response ..."
+      - run: |
+          ./test_url.sh
   "lesson2":
     if: ${{ github.event.inputs.lesson == 'lesson2' }}
     runs-on: ubuntu-latest #self-hosted

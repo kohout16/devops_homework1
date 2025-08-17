@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# API Testing Script for Manual Verification
+set -e
+
+API_URL="${1:-http://ecs-nginx-demo-alb-1121756053.eu-central-1.elb.amazonaws.com}"
+echo "🧪 Testing DevOps Demo API at: $API_URL"
+echo "============================================"
+
+# Test 1: Custom health Check
+echo ""
+echo "1️⃣  Testing page for custom string..."
+HEALTH_RESPONSE=$(curl -s "$API_URL")
+if echo "$HEALTH_RESPONSE" | grep -q "20250813 by JL"; then
+    echo "✅ Health check passed"
+else
+    echo "❌ Health check failed"
+    echo "Response: $HEALTH_RESPONSE"
+fi
