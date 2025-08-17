@@ -145,6 +145,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    - run: | # This test custom string on nginx for lesson 9 testing, if fails stop deploying
+          ./test_url.sh
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
       with: 
