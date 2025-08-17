@@ -16,4 +16,5 @@ if echo "$HEALTH_RESPONSE" | grep -q "202508corrupted13 by JL"; then
 else
     echo "❌ Custom string not found"
     echo "Response: $HEALTH_RESPONSE"
+    exit 1   # <-- non-zero exit code makes workflow fail
 fi
