@@ -96,6 +96,9 @@ resource "aws_instance" "ec2_instance" {
     systemctl start httpd
     systemctl enable httpd
     echo "<html><body><h1>Terraform EC2 Instance</h1><p>Vytvořeno pomocí Terraform pro ${var.course_name}</p></body></html>" > /var/www/html/index.html
+
+    
+
   EOF
 
   tags = {

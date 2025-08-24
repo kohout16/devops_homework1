@@ -99,7 +99,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height     = 6
         properties = {
           metrics = [
-            [ "AWS/EC2", "CPUUtilization", "InstanceId", "i-0123456789abcdef0" ]
+            [ "AWS/EC2", "CPUUtilization", "InstanceId", aws_instance.ec2_instance.id ]
           ]
           period    = 300
           stat      = "Average"
@@ -115,7 +115,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         height     = 6
         properties = {
           metrics = [
-            [ "CWAgent", "mem_used_percent", "InstanceId", "i-0123456789abcdef0" ]
+            [ "CWAgent", "mem_used_percent", "InstanceId", aws_instance.ec2_instance.id ]
           ]
           period    = 300
           stat      = "Average"
