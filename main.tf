@@ -38,57 +38,23 @@ provider "aws" {
 #   }
 # }
 
-## Vytvoření key pair pro SSH přístup
-#resource "aws_key_pair" "ec2_key" {
-#  key_name   = var.key_name
-#  public_key = file(var.public_key_path)
-#}
-
-# # Security group pro SSH přístup
-# resource "aws_security_group" "ec2_sg" {
-#   name        = "${var.name_prefix}-sg"
-#   description = "Security group pro EC2 instanci s SSH pristupem"
-
-#   ingress {
-#     from_port   = 22
-#     to_port     = 22
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#     description = "SSH pristup"
-#   }
-
-#   # Přidáme HTTP port pro bonus úkol s Apache
-#   ingress {
-#     from_port   = 80
-#     to_port     = 80
-#     protocol    = "tcp"
-#     cidr_blocks = ["0.0.0.0/0"]
-#     description = "HTTP pristup"
-#   }
-
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#     description = "Povoleni veskereho odchoziho provozu"
-#   }
-
-#   tags = {
-#     Name        = "${var.name_prefix}-sg"
-#     Environment = var.environment
-#     Course      = var.course_name
-#   }
-# }
+# Vytvoření key pair pro SSH přístup
+resource "aws_key_pair" "ec2_key" {
+ key_name   = var.key_name
+ public_key = file(var.public_key_path)
+}
 
 # EC2 instance
 resource "aws_instance" "ec2_instance" {
   ami                    = "ami-0a72753edf3e631b7"
   instance_type          = var.instance_type
-  #key_name               = aws_key_pair.ec2_key.key_name
+  key_name               = aws_key_pair.ec2_key.key_name
   subnet_id              = aws_subnet.subnet1.id
-  vpc_security_group_ids = [aws_security_group.ecs_tasks.id]
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id] #aws_security_group.ecs_tasks.id, 
 
+   # ← Attach the IAM instance profile here
+  iam_instance_profile = aws_iam_instance_profile.cloudwatch_profile.name
+  
   user_data = <<-EOF
     #!/bin/bash
     yum update -y
@@ -97,7 +63,31 @@ resource "aws_instance" "ec2_instance" {
     systemctl enable httpd
     echo "<html><body><h1>Terraform EC2 Instance</h1><p>Vytvořeno pomocí Terraform pro ${var.course_name}</p></body></html>" > /var/www/html/index.html
 
-    
+    yum install -y amazon-cloudwatch-agent
+
+    # CloudWatch Agent configuration
+    cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<'INNER_EOF'
+    {
+        "metrics": {
+            "metrics_collected": {
+                "mem": {
+                    "measurement": ["mem_used_percent"],
+                    "metrics_collection_interval": 60
+                }
+            },
+            "append_dimensions": {
+                "InstanceId": "$${aws:InstanceId}"
+            }
+        }
+    }
+    INNER_EOF
+
+    # Start and enable CloudWatch agent  
+    /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+        -a fetch-config \
+        -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json \
+        -m ec2 \
+        -s
 
   EOF
 
