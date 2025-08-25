@@ -218,7 +218,7 @@ jobs:
       uses: actions/checkout@v4
     - run: python
     - run: | # this is security SAST test, if fails, pipeline fails
-          sudo apt install python3-bandit && bandit -r app.py > tmp/bandit.out
+          sudo apt install python3-bandit && bandit -r app.py | tee tmp/bandit.out
           grep 'No issues identified' tmp/bandit.out || exit 1
     - run: echo "not skipped"
 
