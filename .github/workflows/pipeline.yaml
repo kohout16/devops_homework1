@@ -147,6 +147,10 @@ jobs:
       uses: actions/checkout@v4
     - run: | # This test custom string on nginx for lesson 9 testing, if fails stop deploying
           ./test_url.sh
+    - run: python
+    - run: | # this is security SAST test, if fails, pipeline fails
+          sudo apt install python3-bandit && bandit -r app.py > tmp/bandit.out
+          grep 'No issues identified' tmp/bandit.out || exit 1
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
       with: 

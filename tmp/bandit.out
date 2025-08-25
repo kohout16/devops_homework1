@@ -1,0 +1,73 @@
+Run started:2025-08-25 18:04:37.200746
+
+Test results:
+>> Issue: [B404:blacklist] Consider possible security implications associated with subprocess module.
+   Severity: Low   Confidence: High
+   Location: app.py:10
+   More Info: https://bandit.readthedocs.io/en/latest/blacklists/blacklist_imports.html#b404-import-subprocess
+9	import sqlite3
+10	import subprocess
+11	import pickle
+
+--------------------------------------------------
+>> Issue: [B403:blacklist] Consider possible security implications associated with pickle module.
+   Severity: Low   Confidence: High
+   Location: app.py:11
+   More Info: https://bandit.readthedocs.io/en/latest/blacklists/blacklist_imports.html#b403-import-pickle
+10	import subprocess
+11	import pickle
+12	import hashlib
+
+--------------------------------------------------
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   Location: app.py:130
+   More Info: https://bandit.readthedocs.io/en/latest/plugins/b602_subprocess_popen_with_shell_equals_true.html
+129	        # Vulnerable command execution - command injection possible
+130	        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+131	        return jsonify({
+
+--------------------------------------------------
+>> Issue: [B301:blacklist] Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue.
+   Severity: Medium   Confidence: High
+   Location: app.py:146
+   More Info: https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b301-pickle
+145	        # Vulnerable deserialization - arbitrary code execution possible
+146	        obj = pickle.loads(data)
+147	        return jsonify({"message": "Deserialized successfully", "data": str(obj)})
+
+--------------------------------------------------
+>> Issue: [B303:blacklist] Use of insecure MD2, MD4, MD5, or SHA1 hash function.
+   Severity: Medium   Confidence: High
+   Location: app.py:161
+   More Info: https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b303-md5
+160	    # Vulnerable hash function - MD5 is cryptographically broken
+161	    md5_hash = hashlib.md5(text.encode()).hexdigest()
+162	    
+
+--------------------------------------------------
+>> Issue: [B201:flask_debug_true] A Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code.
+   Severity: High   Confidence: Medium
+   Location: app.py:199
+   More Info: https://bandit.readthedocs.io/en/latest/plugins/b201_flask_debug_true.html
+198	    # Intentional vulnerability: Debug mode enabled in production
+199	    app.run(host='0.0.0.0', port=5000, debug=True)
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 146
+	Total lines skipped (#nosec): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0.0
+		Low: 2.0
+		Medium: 2.0
+		High: 2.0
+	Total issues (by confidence):
+		Undefined: 0.0
+		Low: 0.0
+		Medium: 1.0
+		High: 5.0
+Files skipped (0):
