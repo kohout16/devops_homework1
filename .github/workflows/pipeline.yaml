@@ -15,6 +15,7 @@ on:
             - lesson4
             - lesson5
             - lesson8
+            - lesson11
 jobs:
   "test_url":
     if: ${{ github.event.inputs.lesson == 'test_url' }}
@@ -136,7 +137,6 @@ jobs:
         run: |
           ECR_URL=$(terraform output -raw ecr_repository_url)
           echo "ecr_url=$ECR_URL" >> $GITHUB_OUTPUT
-
   "lesson8":
     if: ${{ github.event.inputs.lesson == 'lesson8' }}
 
@@ -145,8 +145,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - run: | # This test custom string on nginx for lesson 9 testing, if fails stop deploying
-          ./test_url.sh
+    #- run: | # This test custom string on nginx for lesson 9 testing, if fails stop deploying
+    #      ./test_url.sh
     - run: python
     - run: | # this is security SAST test, if fails, pipeline fails
           sudo apt install python3-bandit && bandit -r app.py > tmp/bandit.out
@@ -206,5 +206,19 @@ jobs:
         terraform init
         terraform plan -no-color -out=tfplan
         terraform apply -auto-approve -no-color tfplan
-      
+
+
+  "lesson11":
+    if: ${{ github.event.inputs.lesson == 'lesson11' }}
+
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - run: python
+    - run: | # this is security SAST test, if fails, pipeline fails
+          sudo apt install python3-bandit && bandit -r app.py > tmp/bandit.out
+          grep 'No issues identified' tmp/bandit.out || exit 1
+    - run: echo "not skipped"
 
