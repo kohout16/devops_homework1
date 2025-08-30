@@ -223,7 +223,7 @@ jobs:
           grep 'No issues identified' tmp/bandit.out || exit 1
     - run: echo "not skipped"
   
-    "lesson12":
+  "lesson12":
     if: ${{ github.event.inputs.lesson == 'lesson12' }}
 
     runs-on: ubuntu-latest
