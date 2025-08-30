@@ -16,6 +16,7 @@ on:
             - lesson5
             - lesson8
             - lesson11
+            - lesson12
 jobs:
   "test_url":
     if: ${{ github.event.inputs.lesson == 'test_url' }}
@@ -221,4 +222,17 @@ jobs:
           sudo apt install python3-bandit && bandit -r my_calculations.py | tee tmp/bandit.out
           grep 'No issues identified' tmp/bandit.out || exit 1
     - run: echo "not skipped"
+  
+    "lesson12":
+    if: ${{ github.event.inputs.lesson == 'lesson12' }}
+
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - run: | # install newman
+          sudo apt install npm && npm install -g newman
+    - run: | # test with newman
+          newman run devops_homework.postman_collection.json -e DEV.postman_environment.json
 
