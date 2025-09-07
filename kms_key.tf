@@ -88,3 +88,54 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "devops_lesson" {
     }
   }
 }
+
+# enforce encryption policy (extra homework)
+resource "aws_s3_bucket_policy" "devops_lesson" {
+  bucket = aws_s3_bucket.devops_lesson.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Id      = "PutObjPolicy",
+    Statement = [
+      {
+        Sid       = "DenyIncorrectEncryptionHeader"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:PutObject"
+        Resource  = "${aws_s3_bucket.devops_lesson.arn}/*"
+        Condition = {
+          StringNotEquals = {
+            "s3:x-amz-server-side-encryption" = "aws:kms"
+          }
+        }
+      },
+      {
+        Sid       = "DenyUnEncryptedObjectUploads"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:PutObject"
+        Resource  = "${aws_s3_bucket.devops_lesson.arn}/*"
+        Condition = {
+          Null = {
+            "s3:x-amz-server-side-encryption" = true
+          }
+        }
+      },
+      {
+        Sid       = "AllowSSLRequestsOnly"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource = [
+          aws_s3_bucket.devops_lesson.arn,
+          "${aws_s3_bucket.devops_lesson.arn}/*"
+        ]
+        Condition = {
+          Bool = {
+            "aws:SecureTransport" = "false"
+          }
+        }
+      }
+    ]
+  })
+}

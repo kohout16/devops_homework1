@@ -1,0 +1,7 @@
+FROM amazon/cloudwatch-agent:latest
+
+# Copy JSON config
+COPY cloudwatch-agent-config.json /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+
+# Set entrypoint to start agent with config
+ENTRYPOINT ["/opt/aws/amazon-cloudwatch-agent/bin/start-amazon-cloudwatch-agent", "-config", "/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json"]

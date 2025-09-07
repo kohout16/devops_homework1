@@ -1,0 +1,16 @@
+{
+  "agent": {
+    "metrics_collection_interval": 60,
+    "run_as_user": "root"
+  },
+  "metrics": {
+    "metrics_collected": {
+      "http": {
+        "measurement": ["ActiveConnections"],
+        "url": "http://web:80/nginx_status",
+        "json_key": "Active connections",
+        "metrics_collection_interval": 60
+      }
+    }
+  }
+}

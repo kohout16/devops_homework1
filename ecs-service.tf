@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "lesson7" {
           protocol      = "tcp"
         }
       ]
-    }
+    },
   ])
 }
 
@@ -31,7 +31,7 @@ resource "aws_ecs_service" "lesson7" {
   name            = "lesson7"
   cluster        = aws_ecs_cluster.lesson7.id
   task_definition = aws_ecs_task_definition.lesson7.arn
-  desired_count   = 2
+  desired_count   = 1
 
   launch_type = "FARGATE"
 
